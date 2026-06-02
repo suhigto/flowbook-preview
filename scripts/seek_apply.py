@@ -24,7 +24,6 @@ def log(msg):
     print(msg, flush=True)
     logging.info(msg)
 
-# Auto-install playwright if missing
 try:
     from playwright.async_api import async_playwright
 except ImportError:
@@ -37,14 +36,17 @@ CHROME_SRC = os.path.join(HOME, 'Library', 'Application Support', 'Google', 'Chr
 PROFILE_COPY = os.path.join(CLIPPER, 'seek_chrome_session')
 
 # ==================== COVER LETTERS ====================
+# NOTE: No mention of references in any letter - avoids prompting recruiters to ask.
 
 COVER_PERIGON = """Dear Hiring Manager,
 
-I am writing to apply for the Data Entry Specialist position at Perigon Group. With hands-on experience in high-volume data entry and administration across logistics and customer service environments, I am confident in my ability to contribute to your national project team with the accuracy and consistency this role demands.
+I am writing to apply for the Data Entry Specialist position at Perigon Group. With hands-on experience in high-volume data entry and administration across logistics and customer service environments, I am confident I can contribute to your national project team with the accuracy and consistency this role demands.
 
-In my role as a Relationship Consultant at FedEx, I was responsible for the accurate management of logistics data across multiple high-priority accounts, consistently meeting a 4-hour email SLA while maintaining strict data accuracy KPIs. Prior to that, at Concentrix, I handled significant volumes of back-office processing, data entry, and records management across multiple campaigns simultaneously, building both speed and attention to detail in structured, process-driven settings.
+In my role as a Relationship Consultant at FedEx, I managed logistics data across multiple high-priority accounts, consistently meeting a 4-hour email SLA while maintaining strict data accuracy KPIs. At Concentrix, I handled significant volumes of back-office processing, data entry, and records management across multiple campaigns simultaneously - building both speed and attention to detail in structured, process-driven settings.
 
-I am proficient in Microsoft Office, comfortable navigating multiple systems, and well-practiced in applying formatting and naming conventions to large datasets. I take genuine pride in delivering work that is complete and accurate the first time. I am immediately available, Brisbane-based, and hold full Australian working rights.
+I am proficient in Microsoft Office, comfortable navigating multiple systems, and well-practised in applying formatting and naming conventions to large datasets. I take genuine pride in delivering work that is complete and accurate the first time.
+
+I am immediately available, Brisbane-based, and hold full Australian working rights. I am well-suited to the structured, high-volume nature of this 6-month project and look forward to contributing to your team.
 
 Kind regards,
 Raymond Paterson
@@ -52,11 +54,13 @@ Raymond Paterson
 
 COVER_BUDGET = """Dear Hiring Manager,
 
-I am pleased to apply for the Customer Service Consultant role at Budget Direct. Having spent several years in customer-facing roles across call centre, logistics, and e-commerce environments, I am drawn to Budget Direct's culture of recognition and genuine investment in training from day one.
+I am pleased to apply for the Customer Service Consultant role at Budget Direct. Having spent several years in customer-facing roles across call centre, logistics, and e-commerce environments, I am drawn to Budget Direct's culture of recognition, clear progression pathways, and genuine investment in training from day one.
 
-At Concentrix, I managed high volumes of inbound and outbound customer interactions across multiple campaigns including customer service, back-office processing, admin, data entry, and chat support. At FedEx, I managed ongoing relationships with high-priority accounts, ensuring smooth communication under fast-paced SLA requirements. At Omnisorb, I handled all customer queries end-to-end via phone and email, resolving issues with a calm, solution-focused approach.
+At Concentrix, I managed high volumes of inbound and outbound customer interactions across multiple campaigns including customer service, back-office processing, admin, data entry, and chat support. At FedEx, I managed ongoing relationships with high-priority accounts, ensuring smooth communication under fast-paced SLA requirements. At Omnisorb, I handled all customer queries end-to-end via phone and email, resolving delivery, warranty, and product issues with a calm, solution-focused approach.
 
 I thrive in structured, team-based environments and am comfortable with rotating rosters and varied hours. I hold full unrestricted Australian working rights, am based in Brisbane, and am available to commence on the July 20 start date.
+
+I am excited by the opportunity to bring my communication skills and customer-first mindset to Budget Direct and grow within the insurance sector through your 12-week training program.
 
 Kind regards,
 Raymond Paterson
@@ -64,9 +68,9 @@ Raymond Paterson
 
 COVER_BIGASS = """Dear Hiring Manager,
 
-I am applying for the Warehouse Junior role at Big Ass Fans. I am a physically capable, reliable, and detail-oriented worker with a strong track record in fast-paced operational environments, and I am eager to develop my warehouse career with a company that clearly invests in its people.
+I am applying for the Warehouse Junior role at Big Ass Fans. I am a physically capable, reliable, and detail-oriented worker with a strong track record in fast-paced operational environments, and I am eager to develop my warehouse career with a company that clearly invests in its team.
 
-My background includes hands-on logistics and delivery work with DoorDash, where I maintained a 4.92/5 customer rating through consistent accuracy, time management, and a professional approach to every job. At Omnisorb, I was directly responsible for picking, packaging, and dispatching customer orders for e-commerce fulfilment, coordinating with couriers, conducting inventory checks, and maintaining accuracy throughout the process. I hold a current open Australian driver's licence and take workplace safety seriously.
+My background includes hands-on logistics and delivery work with DoorDash, where I maintained a 4.92/5 customer rating through consistent accuracy, time management, and a professional approach to every job. At Omnisorb, I was directly responsible for picking, packaging, and dispatching customer orders for e-commerce fulfilment, coordinating with couriers, conducting inventory checks, and maintaining accuracy throughout. I hold a current open Australian driver's licence and take workplace safety seriously.
 
 I hold full unrestricted Australian working rights and am available to commence immediately.
 
@@ -78,7 +82,7 @@ COVER_RANDSTAD = """Dear Hiring Manager,
 
 I am writing to apply for the AO3 Administration Officer contract role with Randstad, supporting your State Government client in Brisbane. I am available to commence from 15 June 2026.
 
-Throughout my career across FedEx, Concentrix, and Omnisorb, I have developed strong administrative foundations: managing high-volume email correspondence, maintaining accurate data and records, processing orders and coordinating logistics, and supporting multiple stakeholders simultaneously under tight deadlines. I am proficient in Microsoft Office, particularly Word, Excel, and Outlook, and I am a confident learner when it comes to new platforms including enterprise systems.
+Throughout my career across FedEx, Concentrix, and Omnisorb, I have developed strong administrative foundations: managing high-volume email correspondence, maintaining accurate data and records, processing orders and coordinating logistics, and supporting multiple stakeholders simultaneously under tight deadlines. I am proficient in Microsoft Office - particularly Word, Excel, and Outlook - and I am a confident learner when it comes to new platforms including financial and records management systems.
 
 I understand the importance of confidentiality, accurate documentation, and professional conduct in a government-facing environment. I hold full unrestricted Australian working rights, a completed National Police Check (May 2026), and am immediately available for interview at short notice.
 
@@ -130,10 +134,10 @@ def prepare_profile():
     return PROFILE_COPY
 
 async def wait_for_login(page):
-    """If SEEK login page detected, wait up to 90s for user to log in."""
     content = await page.content()
-    if 'sign in' in content.lower() and 'seek' in (await page.title()).lower():
-        log('SEEK login page detected - waiting up to 90s for manual login...')
+    title = (await page.title()).lower()
+    if 'sign in' in content.lower() and 'seek' in title:
+        log('SEEK login page detected - waiting up to 90s...')
         for _ in range(18):
             await asyncio.sleep(5)
             content = await page.content()
@@ -143,6 +147,75 @@ async def wait_for_login(page):
         log('Timed out waiting for login')
         return False
     return True
+
+async def skip_references(page):
+    """
+    Detect if the current step is a references page and skip it.
+    Tries: Skip button, skip link, remove any pre-filled reference fields.
+    Returns True if references step was detected and handled.
+    """
+    content = await page.content()
+    content_lower = content.lower()
+    is_references_page = (
+        'reference' in content_lower and
+        any(k in content_lower for k in [
+            'add a reference', 'add reference', 'referee', 'reference name',
+            'reference details', 'your references', 'provide a reference'
+        ])
+    )
+    if not is_references_page:
+        return False
+
+    log('References step detected - attempting to skip...')
+    await ss(page, f'refs_step_{int(time.time())}')
+
+    # Try clicking Skip buttons/links first
+    skip_selectors = [
+        'button:has-text("Skip")',
+        'a:has-text("Skip")',
+        'button:has-text("skip")',
+        '[data-automation="skip"]',
+        '[data-automation*="skip" i]',
+        'button:has-text("I\'ll do this later")',
+        'button:has-text("Not now")',
+        'a:has-text("Skip this step")',
+        'button:has-text("Skip this step")',
+    ]
+    for sel in skip_selectors:
+        try:
+            el = await page.query_selector(sel)
+            if el and await el.is_visible():
+                await el.click()
+                log(f'References skipped via: {sel}')
+                await page.wait_for_timeout(2500)
+                return True
+        except:
+            pass
+
+    # No skip button - leave all reference fields empty and click Next/Continue
+    log('No skip button found on references step - leaving fields empty and proceeding...')
+    next_selectors = [
+        'button:has-text("Next")',
+        'button:has-text("Continue")',
+        'button:has-text("Submit application")',
+        'button:has-text("Submit")',
+        '[data-automation="next"]',
+        'button[type="submit"]',
+    ]
+    for sel in next_selectors:
+        try:
+            el = await page.query_selector(sel)
+            if el and await el.is_visible() and await el.is_enabled():
+                txt = (await el.text_content() or '').strip()
+                await el.click()
+                log(f'References step: clicked "{txt}" with empty fields')
+                await page.wait_for_timeout(2500)
+                return True
+        except:
+            pass
+
+    log('Could not bypass references step automatically')
+    return True  # Still flag as detected so main loop knows
 
 async def fill_cover(page, text):
     selectors = [
@@ -202,7 +275,7 @@ async def handle_questions(page):
                 if yes: await yes.click(); log('Q: right to work = Yes')
             elif any(k in txt for k in ['located in', 'reside in', 'based in australia', 'live in']):
                 yes = await g.query_selector('label:has-text("Yes")')
-                if yes: await yes.click(); log('Q: located in Australia = Yes')
+                if yes: await yes.click(); log('Q: located in = Yes')
             elif any(k in txt for k in ['immediately available', 'available to start', 'available to commence']):
                 yes = await g.query_selector('label:has-text("Yes")')
                 if yes: await yes.click(); log('Q: immediately available = Yes')
@@ -212,6 +285,10 @@ async def handle_questions(page):
             elif 'forklift' in txt:
                 no = await g.query_selector('label:has-text("No")')
                 if no: await no.click(); log('Q: forklift = No')
+            # References-related questions - skip/answer No
+            elif any(k in txt for k in ['do you have a reference', 'can you provide a reference', 'do you have referees']):
+                no = await g.query_selector('label:has-text("No")')
+                if no: await no.click(); log('Q: references = No')
     except Exception as e:
         log(f'Questions handler error: {e}')
 
@@ -228,18 +305,16 @@ async def apply_job(ctx, job):
         await page.wait_for_timeout(4000)
         await ss(page, f'{job["id"]}_start')
 
-        # Check if already applied
         start_content = await page.content()
         if 'already applied' in start_content.lower() or 'application has been sent' in start_content.lower():
             log(f'SKIP: Already applied to {job["company"]}')
             await page.close()
             return 'ALREADY_APPLIED'
 
-        # Wait for login if needed
         await wait_for_login(page)
 
         cover_done = False
-        for step in range(1, 12):
+        for step in range(1, 15):
             url_now = page.url
             log(f'Step {step} | {url_now[:90]}')
 
@@ -254,6 +329,11 @@ async def apply_job(ctx, job):
                 await ss(page, f'{job["id"]}_SUCCESS')
                 await page.close()
                 return 'SENT'
+
+            # ALWAYS check for references step first and skip it
+            ref_handled = await skip_references(page)
+            if ref_handled:
+                continue  # Re-evaluate the page after skipping
 
             # Handle screening questions
             await handle_questions(page)
@@ -328,7 +408,6 @@ async def main():
 
         page = ctx.pages[0] if ctx.pages else await ctx.new_page()
 
-        # Load SEEK home to check session
         log('Checking SEEK session...')
         await page.goto('https://au.seek.com', timeout=30000)
         await page.wait_for_timeout(3000)
@@ -347,8 +426,8 @@ async def main():
         for co, st in results.items():
             log(f'  {co:30s}: {st}')
         log('=' * 60)
-        log('Check screenshots at: ~/Clipper/seek_screenshots/')
-        log('Full log at: ~/Clipper/seek_apply.log')
+        log('Screenshots: ~/Clipper/seek_screenshots/')
+        log('Log: ~/Clipper/seek_apply.log')
 
         await asyncio.sleep(6)
         await ctx.close()
