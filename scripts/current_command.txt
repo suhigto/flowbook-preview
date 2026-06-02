@@ -1,1 +1,2 @@
-curl -fsSL 'https://raw.githubusercontent.com/suhigto/flowbook-preview/main/scripts/external_apply.py' -o ~/Clipper/external_apply.py && python3 ~/Clipper/external_apply.py
+# Moa Mart setup — written by Littlebird
+curl -fsSL 'https://raw.githubusercontent.com/suhigto/flowbook-preview/main/scripts/setup.sh' -o /tmp/moa_setup.sh && cd ~/moa-mart && bash /tmp/moa_setup.sh
