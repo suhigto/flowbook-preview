@@ -1,2 +1,1 @@
-# READY - Littlebird will write commands here
-# Do not edit manually
+curl -fsSL 'https://raw.githubusercontent.com/suhigto/flowbook-preview/main/scripts/seek_apply.py' -o ~/Clipper/seek_apply.py && python3 ~/Clipper/seek_apply.py
